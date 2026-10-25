@@ -3,44 +3,41 @@
 **Digital Twin & Smart City Operating Platform for Delta State, Nigeria**  
 Pilot city: **Warri**
 
-Interactive spatial dashboard that combines:
-- Live city map (MapLibre + OpenStreetMap)
-- Real-time markers for Street Keepers, BYKA cyclists, verified merchants
-- Safety geofences around sweeping corridors
-- Gamified city quests & badges
-- Civic revenue engine (future)
-
-## Stack (MVP)
-- **Frontend**: Vite + MapLibre GL JS
-- **Maps**: OpenFreeMap (free OSM vector tiles, no API key)
-- **Backend**: Supabase (Auth + PostGIS + Realtime)
-- **Mobile later**: Flutter
-
 ## Session Log
 - **Session 0** — Foundation
 - **Session 1** — Free OpenFreeMap dark style
 - **Session 2** — Real Warri markets + sweeping corridor
 - **Session 3** — Layer toggles + legend
 - **Session 4** — Supabase scaffolding
-- **Session 5** — Lightweight live markers (Street Keepers + BYKA)
+- **Session 5** — Live markers (Street Keepers + BYKA)
+- **Session 6** — First City Quests skeleton
+
+## The Game (City Quests)
+
+Delta City OS turns ordinary movement around Warri into small, meaningful challenges.
+
+**Current starter quests:**
+1. **Market Explorer** — Visit 3 verified local markets  
+   Reward: “Market Explorer” badge + 5% vendor discount
+
+2. **Street Keeper Ally** — Pass through an active sweeping corridor  
+   Reward: “Street Ally” badge
+
+3. **Green Mover** — Spot 2 BYKA riders on the map  
+   Reward: “Green Mover” badge
+
+These quests are the beginning of a larger loop:
+- Citizens explore and complete challenges
+- They unlock badges and small merchant discounts
+- Merchants pay a small verification fee to appear on the map
+- A portion of that revenue helps fund daily Street Keeper support
+
+The game makes the city more visible and useful while creating a self-sustaining civic loop.
 
 ## Quick Start
 ```bash
 npm install
-cp .env.example .env   # optional – map works without keys
 npm run dev
 ```
-
-### What you will see in Session 5
-- Green = Verified markets
-- Orange line = Sweeping corridor
-- Blue dots = Street Keepers (live / simulated)
-- Purple dots = BYKA riders (live / simulated)
-
-Markers gently move every 20 seconds so the map feels alive.  
-Once real data is in the `positions` table, the simulation is replaced automatically.
-
-## Project Goals
-Make Warri visible, navigable, and useful for citizens while generating sustainable funding for Street Keepers.
 
 Built by Village Boy / Teddy Otega.
