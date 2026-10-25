@@ -1,5 +1,6 @@
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { supabase, isSupabaseConfigured } from './lib/supabase.js';
 
 // Warri, Delta State approximate center
 const WARRI = {
@@ -23,9 +24,10 @@ map.addControl(new maplibregl.GeolocateControl({
 }), 'top-right');
 
 map.on('load', async () => {
-  console.log('Delta City OS — Session 3: Layer controls active');
+  console.log('Delta City OS — Session 4: Supabase scaffolding ready');
+  console.log('Supabase configured:', isSupabaseConfigured);
 
-  // --- Markets ---
+  // --- Markets (still using local GeoJSON for now) ---
   const markets = await fetch('/src/data/warri-markets.geojson').then(r => r.json());
 
   map.addSource('markets', {
@@ -82,7 +84,7 @@ map.on('load', async () => {
     }
   });
 
-  // --- Click popup for markets ---
+  // Click popup
   map.on('click', 'markets-circle', (e) => {
     const props = e.features[0].properties;
     new maplibregl.Popup()
@@ -102,18 +104,33 @@ map.on('load', async () => {
     map.getCanvas().style.cursor = '';
   });
 
-  // --- Layer toggles ---
+  // Layer toggles
   const toggleMarkets = document.getElementById('toggle-markets');
   const toggleCorridor = document.getElementById('toggle-corridor');
 
-  toggleMarkets.addEventListener('change', (e) => {
+  toggleMarkets?.addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
     map.setLayoutProperty('markets-circle', 'visibility', visibility);
     map.setLayoutProperty('markets-label', 'visibility', visibility);
   });
 
-  toggleCorridor.addEventListener('change', (e) => {
+  toggleCorridor?.addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
     map.setLayoutProperty('corridor-line', 'visibility', visibility);
   });
+
+  // -------------------------------------------------
+  // Future: Live positions from Supabase Realtime
+  // (ready once you add your keys and run the schema)
+  // -------------------------------------------------
+  if (isSupabaseConfigured && supabase) {
+    // Example of how we will subscribe later:
+    // supabase
+    //   .channel('positions')
+    //   .on('postgres_changes', { event: '*', schema: 'public', table: 'positions' }, payload => {
+    //     // update markers on the map
+    //   })
+    //   .subscribe();
+    console.log('Supabase client ready for Realtime positions');
+  }
 });
