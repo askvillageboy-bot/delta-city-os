@@ -9,7 +9,9 @@ const WARRI = {
 
 const map = new maplibregl.Map({
   container: 'map',
-  style: 'https://demotiles.maplibre.org/style.json', // free demo style — replace later with OSM vector
+  // Free OpenFreeMap dark style — no API key required
+  // Alternatives: liberty / bright / positron / fiord
+  style: 'https://tiles.openfreemap.org/styles/dark',
   center: [WARRI.lng, WARRI.lat],
   zoom: 12.5,
   pitch: 0,
@@ -23,7 +25,7 @@ map.addControl(new maplibregl.GeolocateControl({
 }), 'top-right');
 
 map.on('load', () => {
-  console.log('Delta City OS map loaded — centered on Warri');
+  console.log('Delta City OS map loaded — OpenFreeMap dark style · centered on Warri');
   // Future layers will go here:
   // - Street Keepers markers
   // - BYKA cyclists
