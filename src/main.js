@@ -47,7 +47,7 @@ function generateDemoPositions() {
   const base = [
     { id: 'sk-1', role: 'street_keeper', name: 'Street Keeper Team A', lng: 5.748, lat: 5.514 },
     { id: 'sk-2', role: 'street_keeper', name: 'Street Keeper Team B', lng: 5.755, lat: 5.520 },
-    { id: 'byka-1', role: 'byka', name: 'BYKA Rider 01', lng: 5 co.742, lat: 5.518 },
+    { id: 'byka-1', role: 'byka', name: 'BYKA Rider 01', lng: 5.742, lat: 5.518 },
     { id: 'byka-2', role: 'byka', name: 'BYKA Rider 02', lng: 5.760, lat: 5.512 }
   ];
 
@@ -228,7 +228,7 @@ map.on('load', async () => {
 
   // Live data
   async function refreshLivePositions() {
-    let positions = generateDemoPositions(); // demo for now
+    let positions = generateDemoPositions();
     const source = map.getSource('live-positions');
     if (source) source.setData(createLiveGeoJSON(positions));
   }
