@@ -17,29 +17,30 @@ Interactive spatial dashboard that combines:
 - **Mobile later**: Flutter
 
 ## Session Log
-- **Session 0** — Foundation: Vite + MapLibre scaffold, Warri center
-- **Session 1** — Free OpenFreeMap dark style (no API key)
-- **Session 2** — First real layers: 7 verified Warri markets + Warri-Sapele Road sweeping corridor
-- **Session 3** — Layer toggles + clean legend
-- **Session 4** — Supabase scaffolding (client, env, schema, Realtime ready)
+- **Session 0** — Foundation
+- **Session 1** — Free OpenFreeMap dark style
+- **Session 2** — Real Warri markets + sweeping corridor
+- **Session 3** — Layer toggles + legend
+- **Session 4** — Supabase scaffolding
+- **Session 5** — Lightweight live markers (Street Keepers + BYKA)
 
 ## Quick Start
 ```bash
 npm install
-cp .env.example .env
-# → paste your Supabase URL + anon key into .env
+cp .env.example .env   # optional – map works without keys
 npm run dev
 ```
 
-## Supabase Setup (one-time)
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Go to **SQL Editor** → paste the contents of `src/lib/schema.sql` → Run
-3. Copy your Project URL and anon key into `.env`
-4. Restart the dev server
+### What you will see in Session 5
+- Green = Verified markets
+- Orange line = Sweeping corridor
+- Blue dots = Street Keepers (live / simulated)
+- Purple dots = BYKA riders (live / simulated)
 
-The map works even without Supabase keys (it falls back gracefully).
+Markers gently move every 20 seconds so the map feels alive.  
+Once real data is in the `positions` table, the simulation is replaced automatically.
 
 ## Project Goals
-Make Warri (and later Delta) visible, navigable, and useful for citizens while generating sustainable funding for Street Keepers and local infrastructure.
+Make Warri visible, navigable, and useful for citizens while generating sustainable funding for Street Keepers.
 
 Built by Village Boy / Teddy Otega.

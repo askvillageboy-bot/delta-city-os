@@ -37,7 +37,6 @@
         margin-bottom: 12px;
       }
 
-      /* Layer controls */
       .layer-controls {
         display: flex;
         flex-direction: column;
@@ -71,8 +70,9 @@
         border-radius: 2px;
         background: #f97316;
       }
+      .swatch.street-keeper { background: #3b82f6; border: 1.5px solid #fff; }
+      .swatch.byka { background: #a855f7; border: 1.5px solid #fff; }
 
-      /* Legend */
       .legend {
         margin-top: 14px;
         padding-top: 12px;
@@ -101,7 +101,7 @@
     <div class="overlay">
       <h1>Delta City OS</h1>
       <p>Warri Pilot · Interactive City Map</p>
-      <span class="badge">Session 3</span>
+      <span class="badge">Session 5 · Live</span>
 
       <div class="layer-controls">
         <label class="layer-item">
@@ -115,17 +115,31 @@
           <span class="swatch corridor"></span>
           <span>Sweeping Corridor</span>
         </label>
+
+        <label class="layer-item">
+          <input type="checkbox" id="toggle-live" checked />
+          <span class="swatch street-keeper"></span>
+          <span>Live Teams (SK + BYKA)</span>
+        </label>
       </div>
 
       <div class="legend">
         <div class="legend-title">Legend</div>
         <div class="legend-item">
           <span class="swatch market"></span>
-          <span>Verified local markets</span>
+          <span>Verified markets</span>
         </div>
         <div class="legend-item">
           <span class="swatch corridor"></span>
           <span>Priority sweeping zone</span>
+        </div>
+        <div class="legend-item">
+          <span class="swatch street-keeper"></span>
+          <span>Street Keepers (live)</span>
+        </div>
+        <div class="legend-item">
+          <span class="swatch byka"></span>
+          <span>BYKA riders (live)</span>
         </div>
       </div>
     </div>
