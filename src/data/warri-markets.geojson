@@ -1,0 +1,96 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Igbudu Market",
+        "type": "market",
+        "verified": true,
+        "description": "One of the busiest traditional markets in Warri"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7474, 5.5123]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Main Market Warri",
+        "type": "market",
+        "verified": true,
+        "description": "Historic central market along Warri-Sapele Road"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7440, 5.5142]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Okere Market",
+        "type": "market",
+        "verified": true,
+        "description": "Popular local market near Okumagba Avenue"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7515, 5.5180]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Effurun Market",
+        "type": "market",
+        "verified": true,
+        "description": "Major market on PTI Road, Effurun"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7830, 5.5530]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Enerhen Market",
+        "type": "market",
+        "verified": true,
+        "description": "Busy market around Enerhen Road junction"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7722, 5.5294]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ugbuwangue Market",
+        "type": "market",
+        "verified": true,
+        "description": "Market along NPA Express Road"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7350, 5.5050]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ibo Market",
+        "type": "market",
+        "verified": true,
+        "description": "Well-known market in central Warri"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.7485, 5.5158]
+      }
+    }
+  ]
+}

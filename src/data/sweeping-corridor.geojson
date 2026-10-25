@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Warri-Sapele Road Corridor",
+        "type": "sweeping_corridor",
+        "status": "active",
+        "description": "Major arterial road — priority sweeping zone"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [5.7300, 5.5000],
+          [5.7400, 5.5100],
+          [5.7480, 5.5160],
+          [5.7600, 5.5250],
+          [5.7750, 5.5400],
+          [5.7900, 5.5550]
+        ]
+      }
+    }
+  ]
+}
