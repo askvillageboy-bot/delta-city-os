@@ -9,7 +9,6 @@ const WARRI = {
 
 const map = new maplibregl.Map({
   container: 'map',
-  // Free OpenFreeMap dark style — no API key required
   style: 'https://tiles.openfreemap.org/styles/dark',
   center: [WARRI.lng, WARRI.lat],
   zoom: 12.8,
@@ -24,9 +23,9 @@ map.addControl(new maplibregl.GeolocateControl({
 }), 'top-right');
 
 map.on('load', async () => {
-  console.log('Delta City OS map loaded — Session 2 layers active');
+  console.log('Delta City OS — Session 3: Layer controls active');
 
-  // --- Markets layer ---
+  // --- Markets ---
   const markets = await fetch('/src/data/warri-markets.geojson').then(r => r.json());
 
   map.addSource('markets', {
@@ -34,7 +33,6 @@ map.on('load', async () => {
     data: markets
   });
 
-  // Circle markers for markets
   map.addLayer({
     id: 'markets-circle',
     type: 'circle',
@@ -47,7 +45,6 @@ map.on('load', async () => {
     }
   });
 
-  // Labels for markets
   map.addLayer({
     id: 'markets-label',
     type: 'symbol',
@@ -66,7 +63,7 @@ map.on('load', async () => {
     }
   });
 
-  // --- Sweeping corridor layer ---
+  // --- Sweeping corridor ---
   const corridor = await fetch('/src/data/sweeping-corridor.geojson').then(r => r.json());
 
   map.addSource('corridor', {
@@ -85,7 +82,7 @@ map.on('load', async () => {
     }
   });
 
-  // Simple click popup for markets
+  // --- Click popup for markets ---
   map.on('click', 'markets-circle', (e) => {
     const props = e.features[0].properties;
     new maplibregl.Popup()
@@ -103,5 +100,20 @@ map.on('load', async () => {
   });
   map.on('mouseleave', 'markets-circle', () => {
     map.getCanvas().style.cursor = '';
+  });
+
+  // --- Layer toggles ---
+  const toggleMarkets = document.getElementById('toggle-markets');
+  const toggleCorridor = document.getElementById('toggle-corridor');
+
+  toggleMarkets.addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    map.setLayoutProperty('markets-circle', 'visibility', visibility);
+    map.setLayoutProperty('markets-label', 'visibility', visibility);
+  });
+
+  toggleCorridor.addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    map.setLayoutProperty('corridor-line', 'visibility', visibility);
   });
 });

@@ -9,40 +9,127 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body, #map { width: 100%; height: 100%; }
       #map { position: absolute; top: 0; bottom: 0; }
+
       .overlay {
         position: absolute;
         top: 16px;
         left: 16px;
         z-index: 10;
-        background: rgba(15, 23, 42, 0.85);
+        background: rgba(15, 23, 42, 0.9);
         color: #f8fafc;
-        padding: 12px 16px;
-        border-radius: 12px;
+        padding: 14px 16px;
+        border-radius: 14px;
         font-family: system-ui, -apple-system, sans-serif;
         max-width: 280px;
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(148, 163, 184, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
       }
-      .overlay h1 { font-size: 1.1rem; margin-bottom: 4px; }
-      .overlay p { font-size: 0.8rem; color: #94a3b8; }
+      .overlay h1 { font-size: 1.15rem; margin-bottom: 2px; font-weight: 600; }
+      .overlay p { font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px; }
       .badge {
         display: inline-block;
         background: #0ea5e9;
         color: white;
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         padding: 2px 8px;
         border-radius: 999px;
-        margin-top: 8px;
+        margin-bottom: 12px;
+      }
+
+      /* Layer controls */
+      .layer-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .layer-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        user-select: none;
+      }
+      .layer-item input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #0ea5e9;
+        cursor: pointer;
+      }
+      .swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .swatch.market { background: #22c55e; border: 1.5px solid #fff; }
+      .swatch.corridor {
+        width: 18px;
+        height: 4px;
+        border-radius: 2px;
+        background: #f97316;
+      }
+
+      /* Legend */
+      .legend {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .legend-title {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+        color: #e2e8f0;
       }
     </style>
   </head>
   <body>
     <div id="map"></div>
+
     <div class="overlay">
       <h1>Delta City OS</h1>
       <p>Warri Pilot · Interactive City Map</p>
-      <span class="badge">Foundation v0.1</span>
+      <span class="badge">Session 3</span>
+
+      <div class="layer-controls">
+        <label class="layer-item">
+          <input type="checkbox" id="toggle-markets" checked />
+          <span class="swatch market"></span>
+          <span>Verified Markets</span>
+        </label>
+
+        <label class="layer-item">
+          <input type="checkbox" id="toggle-corridor" checked />
+          <span class="swatch corridor"></span>
+          <span>Sweeping Corridor</span>
+        </label>
+      </div>
+
+      <div class="legend">
+        <div class="legend-title">Legend</div>
+        <div class="legend-item">
+          <span class="swatch market"></span>
+          <span>Verified local markets</span>
+        </div>
+        <div class="legend-item">
+          <span class="swatch corridor"></span>
+          <span>Priority sweeping zone</span>
+        </div>
+      </div>
     </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
