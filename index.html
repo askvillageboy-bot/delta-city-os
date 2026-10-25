@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delta City OS — Warri Pilot</title>
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body, #map { width: 100%; height: 100%; }
+      #map { position: absolute; top: 0; bottom: 0; }
+      .overlay {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 10;
+        background: rgba(15, 23, 42, 0.85);
+        color: #f8fafc;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 280px;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .overlay h1 { font-size: 1.1rem; margin-bottom: 4px; }
+      .overlay p { font-size: 0.8rem; color: #94a3b8; }
+      .badge {
+        display: inline-block;
+        background: #0ea5e9;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="overlay">
+      <h1>Delta City OS</h1>
+      <p>Warri Pilot · Interactive City Map</p>
+      <span class="badge">Foundation v0.1</span>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
