@@ -1,5 +1,4 @@
 // Delta City OS — Quests
-// Fixed quests (always on) + Promo quests are generated from active promos
 
 export const FIXED_QUESTS = [
   {
@@ -43,7 +42,6 @@ export const FIXED_QUESTS = [
   }
 ];
 
-/** Build promo-linked quests from active promos */
 export function buildPromoQuests(activePromos = []) {
   return activePromos.map(promo => ({
     id: `promo-quest-${promo.id}`,

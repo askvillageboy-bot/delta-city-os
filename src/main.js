@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { isSupabaseConfigured } from './lib/supabase.js';
 import { FIXED_QUESTS, buildPromoQuests } from './data/quests.js';
+import { CIVIC_QUESTS, DUMPSTERS } from './data/civic.js';
 import { loadActivePromos } from './lib/promos-api.js';
 import { loadClaimedPromoIds, claimPromo } from './lib/claims.js';
 
@@ -24,6 +25,20 @@ map.addControl(new maplibregl.GeolocateControl({
 
 let claimedPromos = new Set();
 let activePromosCache = [];
+
+// Civic progress (local demo)
+const CIVIC_KEY = 'delta_civic_progress';
+function loadCivicProgress() {
+  try {
+    return JSON.parse(localStorage.getItem(CIVIC_KEY) || '{}');
+  } catch {
+    return {};
+  }
+}
+function saveCivicProgress(data) {
+  localStorage.setItem(CIVIC_KEY, JSON.stringify(data));
+}
+let civicProgress = loadCivicProgress();
 
 function createLiveGeoJSON(positions = []) {
   return {
@@ -63,12 +78,13 @@ function renderQuests() {
   const promoQuests = buildPromoQuests(activePromosCache);
   let html = '';
 
+  // Active Offers
   if (promoQuests.length) {
     html += `<div class="section-title">Active Offers</div>`;
     html += promoQuests.map(q => {
       const claimed = claimedPromos.has(q.reward.promoId);
       return `
-        <div class="quest-card promo ${claimed ? 'claimed' : ''}" data-promo-id="${q.reward.promoId}">
+        <div class="quest-card promo ${claimed ? 'claimed' : ''}">
           <div class="quest-header">
             <span class="quest-icon">${q.icon}</span>
             <div>
@@ -88,6 +104,31 @@ function renderQuests() {
     }).join('');
   }
 
+  // Civic Quests
+  html += `<div class="section-title">Civic Actions</div>`;
+  html += CIVIC_QUESTS.filter(q => q.active).map(quest => {
+    const done = Boolean(civicProgress[quest.id]);
+    return `
+      <div class="quest-card civic ${done ? 'completed' : ''}">
+        <div class="quest-header">
+          <span class="quest-icon">${quest.icon}</span>
+          <div>
+            <div class="quest-title">${quest.title}</div>
+            <div class="quest-desc">${quest.description}</div>
+          </div>
+        </div>
+        <div class="promo-actions">
+          <span class="points-tag">+${quest.reward.points} pts</span>
+          ${done
+            ? `<span class="claimed-label">Done ✓ · ${quest.reward.badge}</span>`
+            : `<button class="civic-btn" data-civic-id="${quest.id}">Complete</button>`
+          }
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Daily Quests
   html += `<div class="section-title">Daily Quests</div>`;
   html += FIXED_QUESTS.filter(q => q.active).map(quest => {
     const progress = questProgress[quest.id] || 0;
@@ -113,12 +154,12 @@ function renderQuests() {
 
   container.innerHTML = html;
 
+  // Promo claims
   container.querySelectorAll('.claim-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const promoId = e.target.dataset.promoId;
       e.target.disabled = true;
       e.target.textContent = 'Claiming…';
-
       const result = await claimPromo(promoId);
       if (result.ok) {
         claimedPromos.add(promoId);
@@ -129,14 +170,32 @@ function renderQuests() {
       } else {
         e.target.disabled = false;
         e.target.textContent = 'Claim Offer';
-        alert('Could not claim. Try again.');
       }
+    });
+  });
+
+  // Civic complete
+  container.querySelectorAll('.civic-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = e.target.dataset.civicId;
+      const quest = CIVIC_QUESTS.find(q => q.id === id);
+      civicProgress[id] = {
+        completedAt: new Date().toISOString(),
+        points: quest?.reward?.points || 0
+      };
+      saveCivicProgress(civicProgress);
+      renderQuests();
+      alert(
+        quest
+          ? `Thanks for helping keep Warri clean.\n+${quest.reward.points} points · Badge: ${quest.reward.badge}`
+          : 'Action recorded.'
+      );
     });
   });
 }
 
 map.on('load', async () => {
-  console.log('Delta City OS — Session 8: Promos from Supabase');
+  console.log('Delta City OS — Session 9: Civic Quests');
   console.log('Supabase configured:', isSupabaseConfigured);
 
   claimedPromos = await loadClaimedPromoIds();
@@ -163,7 +222,7 @@ map.on('load', async () => {
     paint: { 'line-color': '#f97316', 'line-width': 6, 'line-opacity': 0.75 }
   });
 
-  // Promo markers from loaded data
+  // Promos
   const promoGeo = {
     type: 'FeatureCollection',
     features: activePromosCache.map(p => ({
@@ -176,6 +235,43 @@ map.on('load', async () => {
   map.addLayer({
     id: 'promos-circle', type: 'circle', source: 'promos',
     paint: { 'circle-radius': 10, 'circle-color': '#eab308', 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' }
+  });
+
+  // Dumpsters (civic layer)
+  const dumpGeo = {
+    type: 'FeatureCollection',
+    features: DUMPSTERS.map(d => ({
+      type: 'Feature',
+      properties: { id: d.id, name: d.name, status: d.status },
+      geometry: { type: 'Point', coordinates: d.coordinates }
+    }))
+  };
+  map.addSource('dumpsters', { type: 'geojson', data: dumpGeo });
+  map.addLayer({
+    id: 'dumpsters-circle', type: 'circle', source: 'dumpsters',
+    paint: {
+      'circle-radius': 9,
+      'circle-color': [
+        'match', ['get', 'status'],
+        'full', '#ef4444',
+        'ok', '#64748b',
+        '#64748b'
+      ],
+      'circle-stroke-width': 2,
+      'circle-stroke-color': '#fff'
+    }
+  });
+
+  map.on('click', 'dumpsters-circle', (e) => {
+    const p = e.features[0].properties;
+    new maplibregl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(`
+        <strong>${p.name}</strong><br/>
+        <small>Status: ${p.status === 'full' ? 'Needs attention' : 'OK'}</small><br/>
+        <span style="font-size:12px;color:#94a3b8">Use Civic Actions to report</span>
+      `)
+      .addTo(map);
   });
 
   map.on('click', 'promos-circle', (e) => {
@@ -199,22 +295,19 @@ map.on('load', async () => {
     paint: { 'circle-radius': 9, 'circle-color': '#a855f7', 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' }
   });
 
+  // Toggles
+  const setVis = (id, on) => map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
   document.getElementById('toggle-markets')?.addEventListener('change', e => {
-    const v = e.target.checked ? 'visible' : 'none';
-    map.setLayoutProperty('markets-circle', 'visibility', v);
-    map.setLayoutProperty('markets-label', 'visibility', v);
+    setVis('markets-circle', e.target.checked);
+    setVis('markets-label', e.target.checked);
   });
-  document.getElementById('toggle-corridor')?.addEventListener('change', e => {
-    map.setLayoutProperty('corridor-line', 'visibility', e.target.checked ? 'visible' : 'none');
-  });
+  document.getElementById('toggle-corridor')?.addEventListener('change', e => setVis('corridor-line', e.target.checked));
   document.getElementById('toggle-live')?.addEventListener('change', e => {
-    const v = e.target.checked ? 'visible' : 'none';
-    map.setLayoutProperty('live-street-keepers', 'visibility', v);
-    map.setLayoutProperty('live-byka', 'visibility', v);
+    setVis('live-street-keepers', e.target.checked);
+    setVis('live-byka', e.target.checked);
   });
-  document.getElementById('toggle-promos')?.addEventListener('change', e => {
-    map.setLayoutProperty('promos-circle', 'visibility', e.target.checked ? 'visible' : 'none');
-  });
+  document.getElementById('toggle-promos')?.addEventListener('change', e => setVis('promos-circle', e.target.checked));
+  document.getElementById('toggle-dumpsters')?.addEventListener('change', e => setVis('dumpsters-circle', e.target.checked));
 
   async function refreshLive() {
     const source = map.getSource('live-positions');

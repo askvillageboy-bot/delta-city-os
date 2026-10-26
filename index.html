@@ -38,6 +38,7 @@
       .swatch.corridor { width: 18px; height: 4px; border-radius: 2px; background: #f97316; }
       .swatch.street-keeper { background: #3b82f6; border: 1.5px solid #fff; }
       .swatch.promo { background: #eab308; border: 1.5px solid #fff; }
+      .swatch.dumpster { background: #ef4444; border: 1.5px solid #fff; }
 
       .section-title {
         font-size: 0.7rem; color: #94a3b8; text-transform: uppercase;
@@ -50,7 +51,8 @@
         border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;
       }
       .quest-card.promo { border-color: rgba(234, 179, 8, 0.35); }
-      .quest-card.claimed { opacity: 0.7; }
+      .quest-card.civic { border-color: rgba(239, 68, 68, 0.3); }
+      .quest-card.claimed, .quest-card.completed { opacity: 0.85; }
       .quest-card.completed { border-color: #22c55e55; background: rgba(34,197,94,0.08); }
       .quest-header { display: flex; gap: 10px; margin-bottom: 8px; }
       .quest-icon { font-size: 1.25rem; }
@@ -69,11 +71,15 @@
         background: #eab308; color: #0f172a; font-size: 0.72rem; font-weight: 700;
         padding: 3px 8px; border-radius: 6px;
       }
-      .claim-btn {
+      .points-tag {
+        background: #ef4444; color: white; font-size: 0.72rem; font-weight: 700;
+        padding: 3px 8px; border-radius: 6px;
+      }
+      .claim-btn, .civic-btn {
         background: #0ea5e9; color: white; border: none; border-radius: 6px;
         padding: 5px 10px; font-size: 0.75rem; font-weight: 600; cursor: pointer;
       }
-      .claim-btn:active { transform: scale(0.97); }
+      .civic-btn { background: #ef4444; }
       .claimed-label { font-size: 0.75rem; color: #22c55e; font-weight: 600; }
     </style>
   </head>
@@ -83,7 +89,7 @@
     <div class="overlay">
       <h1>Delta City OS</h1>
       <p>Warri Pilot · Interactive City Map</p>
-      <span class="badge">Session 7 · Promos</span>
+      <span class="badge">Session 9 · Civic</span>
 
       <div class="layer-controls">
         <label class="layer-item">
@@ -95,6 +101,11 @@
           <input type="checkbox" id="toggle-promos" checked />
           <span class="swatch promo"></span>
           <span>Active Offers</span>
+        </label>
+        <label class="layer-item">
+          <input type="checkbox" id="toggle-dumpsters" checked />
+          <span class="swatch dumpster"></span>
+          <span>Dumpster Points</span>
         </label>
         <label class="layer-item">
           <input type="checkbox" id="toggle-corridor" checked />
