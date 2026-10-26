@@ -11,118 +11,70 @@
       #map { position: absolute; top: 0; bottom: 0; }
 
       .overlay {
-        position: absolute;
-        top: 16px;
-        left: 16px;
-        z-index: 10;
-        background: rgba(15, 23, 42, 0.92);
-        color: #f8fafc;
-        padding: 14px 16px;
-        border-radius: 14px;
+        position: absolute; top: 16px; left: 16px; z-index: 10;
+        background: rgba(15, 23, 42, 0.93); color: #f8fafc;
+        padding: 14px 16px; border-radius: 14px;
         font-family: system-ui, -apple-system, sans-serif;
-        width: 300px;
-        max-height: calc(100vh - 32px);
-        overflow-y: auto;
+        width: 310px; max-height: calc(100vh - 32px); overflow-y: auto;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(148, 163, 184, 0.25);
         box-shadow: 0 8px 24px rgba(0,0,0,0.35);
       }
       .overlay h1 { font-size: 1.15rem; margin-bottom: 2px; font-weight: 600; }
-      .overlay p { font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px; }
+      .overlay p { font-size: 0.78rem; color: #94a3b8; margin-bottom: 8px; }
       .badge {
-        display: inline-block;
-        background: #0ea5e9;
-        color: white;
-        font-size: 0.68rem;
-        padding: 2px 8px;
-        border-radius: 999px;
-        margin-bottom: 12px;
+        display: inline-block; background: #0ea5e9; color: white;
+        font-size: 0.68rem; padding: 2px 8px; border-radius: 999px; margin-bottom: 12px;
       }
 
-      .layer-controls {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 14px;
-      }
+      .layer-controls { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
       .layer-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.85rem;
-        cursor: pointer;
-        user-select: none;
+        display: flex; align-items: center; gap: 10px;
+        font-size: 0.84rem; cursor: pointer; user-select: none;
       }
-      .layer-item input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        accent-color: #0ea5e9;
-        cursor: pointer;
-      }
-      .swatch {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
+      .layer-item input { width: 15px; height: 15px; accent-color: #0ea5e9; }
+      .swatch { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
       .swatch.market { background: #22c55e; border: 1.5px solid #fff; }
       .swatch.corridor { width: 18px; height: 4px; border-radius: 2px; background: #f97316; }
       .swatch.street-keeper { background: #3b82f6; border: 1.5px solid #fff; }
-      .swatch.byka { background: #a855f7; border: 1.5px solid #fff; }
+      .swatch.promo { background: #eab308; border: 1.5px solid #fff; }
 
       .section-title {
-        font-size: 0.72rem;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin: 12px 0 8px;
+        font-size: 0.7rem; color: #94a3b8; text-transform: uppercase;
+        letter-spacing: 0.04em; margin: 12px 0 8px;
       }
 
-      /* Quests */
       .quest-card {
         background: rgba(30, 41, 59, 0.7);
         border: 1px solid rgba(148, 163, 184, 0.15);
-        border-radius: 10px;
-        padding: 10px 12px;
-        margin-bottom: 8px;
+        border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;
       }
-      .quest-card.completed {
-        border-color: #22c55e55;
-        background: rgba(34, 197, 94, 0.08);
-      }
-      .quest-header {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 8px;
-      }
-      .quest-icon { font-size: 1.3rem; }
-      .quest-title { font-size: 0.9rem; font-weight: 600; }
-      .quest-desc { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
-      .quest-progress {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .progress-bar {
-        flex: 1;
-        height: 6px;
-        background: rgba(148, 163, 184, 0.2);
-        border-radius: 3px;
-        overflow: hidden;
-      }
-      .progress-fill {
-        height: 100%;
-        background: #0ea5e9;
-        border-radius: 3px;
-        transition: width 0.3s ease;
-      }
+      .quest-card.promo { border-color: rgba(234, 179, 8, 0.35); }
+      .quest-card.claimed { opacity: 0.7; }
+      .quest-card.completed { border-color: #22c55e55; background: rgba(34,197,94,0.08); }
+      .quest-header { display: flex; gap: 10px; margin-bottom: 8px; }
+      .quest-icon { font-size: 1.25rem; }
+      .quest-title { font-size: 0.88rem; font-weight: 600; }
+      .quest-desc { font-size: 0.74rem; color: #94a3b8; margin-top: 2px; }
+
+      .quest-progress { display: flex; align-items: center; gap: 8px; }
+      .progress-bar { flex: 1; height: 6px; background: rgba(148,163,184,0.2); border-radius: 3px; overflow: hidden; }
+      .progress-fill { height: 100%; background: #0ea5e9; border-radius: 3px; }
       .quest-card.completed .progress-fill { background: #22c55e; }
-      .progress-text { font-size: 0.75rem; color: #94a3b8; min-width: 28px; text-align: right; }
-      .quest-reward {
-        margin-top: 6px;
-        font-size: 0.72rem;
-        color: #22c55e;
+      .progress-text { font-size: 0.74rem; color: #94a3b8; min-width: 28px; text-align: right; }
+      .quest-reward { margin-top: 6px; font-size: 0.72rem; color: #22c55e; }
+
+      .promo-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+      .discount-tag {
+        background: #eab308; color: #0f172a; font-size: 0.72rem; font-weight: 700;
+        padding: 3px 8px; border-radius: 6px;
       }
+      .claim-btn {
+        background: #0ea5e9; color: white; border: none; border-radius: 6px;
+        padding: 5px 10px; font-size: 0.75rem; font-weight: 600; cursor: pointer;
+      }
+      .claim-btn:active { transform: scale(0.97); }
+      .claimed-label { font-size: 0.75rem; color: #22c55e; font-weight: 600; }
     </style>
   </head>
   <body>
@@ -131,13 +83,18 @@
     <div class="overlay">
       <h1>Delta City OS</h1>
       <p>Warri Pilot · Interactive City Map</p>
-      <span class="badge">Session 6 · Quests</span>
+      <span class="badge">Session 7 · Promos</span>
 
       <div class="layer-controls">
         <label class="layer-item">
           <input type="checkbox" id="toggle-markets" checked />
           <span class="swatch market"></span>
           <span>Verified Markets</span>
+        </label>
+        <label class="layer-item">
+          <input type="checkbox" id="toggle-promos" checked />
+          <span class="swatch promo"></span>
+          <span>Active Offers</span>
         </label>
         <label class="layer-item">
           <input type="checkbox" id="toggle-corridor" checked />
@@ -151,10 +108,7 @@
         </label>
       </div>
 
-      <div class="section-title">Today's City Quests</div>
-      <div id="quest-list">
-        <!-- Quests rendered by JS -->
-      </div>
+      <div id="quest-list"></div>
     </div>
 
     <script type="module" src="/src/main.js"></script>

@@ -1,38 +1,24 @@
 # Delta City OS
 
 **Digital Twin & Smart City Operating Platform for Delta State, Nigeria**  
-Pilot city: **Warri**
+Pilot: **Warri**
 
 ## Session Log
-- **Session 0** — Foundation
-- **Session 1** — Free OpenFreeMap dark style
-- **Session 2** — Real Warri markets + sweeping corridor
-- **Session 3** — Layer toggles + legend
-- **Session 4** — Supabase scaffolding
-- **Session 5** — Live markers (Street Keepers + BYKA)
-- **Session 6** — First City Quests skeleton
+- 0–6: Foundation → map, markets, corridor, live markers, fixed quests
+- **7: Promo Quest layer** — time-bound vendor offers + claim flow
 
-## The Game (City Quests)
+## Promo Quests (Session 7)
 
-Delta City OS turns ordinary movement around Warri into small, meaningful challenges.
+Verified merchants can run time-bound promos. Active offers appear as:
+- Gold markers on the map
+- "Active Offers" cards in the side panel with a **Claim Offer** button
 
-**Current starter quests:**
-1. **Market Explorer** — Visit 3 verified local markets  
-   Reward: “Market Explorer” badge + 5% vendor discount
+**Rules in effect:**
+- Only currently active promos (by start/end date) are shown
+- One claim per promo per user (stored locally for now)
+- Claimed state persists in the browser
 
-2. **Street Keeper Ally** — Pass through an active sweeping corridor  
-   Reward: “Street Ally” badge
-
-3. **Green Mover** — Spot 2 BYKA riders on the map  
-   Reward: “Green Mover” badge
-
-These quests are the beginning of a larger loop:
-- Citizens explore and complete challenges
-- They unlock badges and small merchant discounts
-- Merchants pay a small verification fee to appear on the map
-- A portion of that revenue helps fund daily Street Keeper support
-
-The game makes the city more visible and useful while creating a self-sustaining civic loop.
+Later this will move to Supabase so claims are real and vendor-side verification is possible.
 
 ## Quick Start
 ```bash

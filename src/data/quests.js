@@ -1,7 +1,7 @@
-// Delta City OS — Starter Quests (Session 6)
-// These are the first exploration challenges for citizens in Warri
+// Delta City OS — Quests
+// Fixed quests (always on) + Promo quests are generated from active promos
 
-export const QUESTS = [
+export const FIXED_QUESTS = [
   {
     id: 'quest-markets-3',
     title: 'Market Explorer',
@@ -42,3 +42,22 @@ export const QUESTS = [
     active: true
   }
 ];
+
+/** Build promo-linked quests from active promos */
+export function buildPromoQuests(activePromos = []) {
+  return activePromos.map(promo => ({
+    id: `promo-quest-${promo.id}`,
+    title: promo.title,
+    description: `${promo.merchantName} · ${promo.marketId}`,
+    type: 'claim_promo',
+    target: 1,
+    reward: {
+      badge: null,
+      discount: promo.discountLabel,
+      promoId: promo.id
+    },
+    icon: '🏷️',
+    active: true,
+    promo
+  }));
+}
