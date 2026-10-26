@@ -1,8 +1,8 @@
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { supabase, isSupabaseConfigured } from './lib/supabase.js';
+import { isSupabaseConfigured } from './lib/supabase.js';
 import { FIXED_QUESTS, buildPromoQuests } from './data/quests.js';
-import { getActivePromos } from './data/promos.js';
+import { loadActivePromos } from './lib/promos-api.js';
 import { loadClaimedPromoIds, claimPromo } from './lib/claims.js';
 
 const WARRI = { lng: 5.7500, lat: 5.5167 };
@@ -23,6 +23,7 @@ map.addControl(new maplibregl.GeolocateControl({
 }), 'top-right');
 
 let claimedPromos = new Set();
+let activePromosCache = [];
 
 function createLiveGeoJSON(positions = []) {
   return {
@@ -59,9 +60,7 @@ function renderQuests() {
   const container = document.getElementById('quest-list');
   if (!container) return;
 
-  const activePromos = getActivePromos();
-  const promoQuests = buildPromoQuests(activePromos);
-
+  const promoQuests = buildPromoQuests(activePromosCache);
   let html = '';
 
   if (promoQuests.length) {
@@ -124,10 +123,9 @@ function renderQuests() {
       if (result.ok) {
         claimedPromos.add(promoId);
         renderQuests();
-        const msg = result.alreadyClaimed
+        alert(result.alreadyClaimed
           ? 'You already claimed this offer.'
-          : 'Offer claimed! Show this screen to the vendor to redeem.';
-        alert(msg);
+          : 'Offer claimed! Show this screen to the vendor to redeem.');
       } else {
         e.target.disabled = false;
         e.target.textContent = 'Claim Offer';
@@ -138,11 +136,11 @@ function renderQuests() {
 }
 
 map.on('load', async () => {
-  console.log('Delta City OS — Promo claims wired to Supabase');
+  console.log('Delta City OS — Session 8: Promos from Supabase');
   console.log('Supabase configured:', isSupabaseConfigured);
 
-  // Load claims (Supabase + local merge)
   claimedPromos = await loadClaimedPromoIds();
+  activePromosCache = await loadActivePromos();
 
   // Markets
   const markets = await fetch('/src/data/warri-markets.geojson').then(r => r.json());
@@ -165,11 +163,10 @@ map.on('load', async () => {
     paint: { 'line-color': '#f97316', 'line-width': 6, 'line-opacity': 0.75 }
   });
 
-  // Promo markers
-  const activePromos = getActivePromos();
+  // Promo markers from loaded data
   const promoGeo = {
     type: 'FeatureCollection',
-    features: activePromos.map(p => ({
+    features: activePromosCache.map(p => ({
       type: 'Feature',
       properties: { id: p.id, title: p.title, merchant: p.merchantName, discount: p.discountLabel },
       geometry: { type: 'Point', coordinates: p.coordinates }
@@ -202,7 +199,6 @@ map.on('load', async () => {
     paint: { 'circle-radius': 9, 'circle-color': '#a855f7', 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' }
   });
 
-  // Toggles
   document.getElementById('toggle-markets')?.addEventListener('change', e => {
     const v = e.target.checked ? 'visible' : 'none';
     map.setLayoutProperty('markets-circle', 'visibility', v);

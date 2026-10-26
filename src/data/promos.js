@@ -1,6 +1,5 @@
-// Delta City OS — Vendor Promos (Session 7)
-// Time-bound offers from verified merchants
-// Only active promos are shown. Max 1 active promo per merchant.
+// Delta City OS — Vendor Promos
+// Static fallback + helper to normalise Supabase rows
 
 export const PROMOS = [
   {
@@ -44,7 +43,6 @@ export const PROMOS = [
   }
 ];
 
-/** Return only currently active promos */
 export function getActivePromos(now = new Date()) {
   return PROMOS.filter(p => {
     if (!p.active) return false;
@@ -52,4 +50,21 @@ export function getActivePromos(now = new Date()) {
     const end = new Date(p.endAt);
     return now >= start && now <= end;
   });
+}
+
+/** Map a Supabase promos row to the shape the UI expects */
+export function mapPromoRow(row) {
+  return {
+    id: row.id,
+    merchantName: row.merchant_name,
+    marketId: row.market_name,
+    title: row.title,
+    description: row.description || '',
+    discountLabel: row.discount_label,
+    startAt: row.start_at,
+    endAt: row.end_at,
+    coordinates: [row.lng, row.lat],
+    conditions: row.conditions || '',
+    active: row.is_active !== false
+  };
 }
