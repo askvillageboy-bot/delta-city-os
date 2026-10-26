@@ -1,28 +1,36 @@
 # Delta City OS
 
-**Digital Twin & Smart City Operating Platform for Delta State, Nigeria**  
-Pilot: **Warri**
+**Digital Twin & Smart City Operating Platform — Warri Pilot**
 
 ## Session Log
-- 0–6: Foundation → map, markets, corridor, live markers, fixed quests
-- **7: Promo Quest layer** — time-bound vendor offers + claim flow
+- 0–6: Map, markets, corridor, live markers, fixed quests
+- 7: Promo Quest layer (offers + claim UI)
+- **7b: Promo claims wired to Supabase** (with local fallback)
 
-## Promo Quests (Session 7)
+## Promo Claims
 
-Verified merchants can run time-bound promos. Active offers appear as:
-- Gold markers on the map
-- "Active Offers" cards in the side panel with a **Claim Offer** button
+Claims are stored in:
+1. **Supabase** `promo_claims` table (when keys are configured)
+2. **localStorage** as cache + offline fallback
 
-**Rules in effect:**
-- Only currently active promos (by start/end date) are shown
-- One claim per promo per user (stored locally for now)
-- Claimed state persists in the browser
+Anonymous users get a stable `device_key` so claims persist before login.
 
-Later this will move to Supabase so claims are real and vendor-side verification is possible.
+### One-time Supabase setup
+1. Create project at supabase.com
+2. SQL Editor → paste full `src/lib/schema.sql` → Run
+3. Copy URL + anon key into `.env`:
+   ```
+   VITE_SUPABASE_URL=...
+   VITE_SUPABASE_ANON_KEY=...
+   ```
+4. Restart `npm run dev`
+
+Optional: seed the sample promos into the `promos` table so they exist server-side too.
 
 ## Quick Start
 ```bash
 npm install
+cp .env.example .env   # add keys when ready
 npm run dev
 ```
 

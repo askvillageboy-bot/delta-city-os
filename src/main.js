@@ -3,6 +3,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { supabase, isSupabaseConfigured } from './lib/supabase.js';
 import { FIXED_QUESTS, buildPromoQuests } from './data/quests.js';
 import { getActivePromos } from './data/promos.js';
+import { loadClaimedPromoIds, claimPromo } from './lib/claims.js';
 
 const WARRI = { lng: 5.7500, lat: 5.5167 };
 
@@ -21,25 +22,14 @@ map.addControl(new maplibregl.GeolocateControl({
   trackUserLocation: true
 }), 'top-right');
 
-// Local claim state (demo — later moves to Supabase)
-const claimedPromos = new Set(
-  JSON.parse(localStorage.getItem('delta_claimed_promos') || '[]')
-);
-
-function saveClaims() {
-  localStorage.setItem('delta_claimed_promos', JSON.stringify([...claimedPromos]));
-}
+let claimedPromos = new Set();
 
 function createLiveGeoJSON(positions = []) {
   return {
     type: 'FeatureCollection',
     features: positions.map(p => ({
       type: 'Feature',
-      properties: {
-        id: p.id,
-        role: p.role,
-        name: p.name || p.role
-      },
+      properties: { id: p.id, role: p.role, name: p.name || p.role },
       geometry: { type: 'Point', coordinates: [p.lng, p.lat] }
     }))
   };
@@ -74,7 +64,6 @@ function renderQuests() {
 
   let html = '';
 
-  // Promo Quests first (time-sensitive)
   if (promoQuests.length) {
     html += `<div class="section-title">Active Offers</div>`;
     html += promoQuests.map(q => {
@@ -100,7 +89,6 @@ function renderQuests() {
     }).join('');
   }
 
-  // Fixed Quests
   html += `<div class="section-title">Daily Quests</div>`;
   html += FIXED_QUESTS.filter(q => q.active).map(quest => {
     const progress = questProgress[quest.id] || 0;
@@ -126,21 +114,35 @@ function renderQuests() {
 
   container.innerHTML = html;
 
-  // Claim buttons
   container.querySelectorAll('.claim-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
       const promoId = e.target.dataset.promoId;
-      claimedPromos.add(promoId);
-      saveClaims();
-      renderQuests();
-      // Simple feedback
-      alert('Offer claimed! Show this screen to the vendor to redeem.');
+      e.target.disabled = true;
+      e.target.textContent = 'Claiming…';
+
+      const result = await claimPromo(promoId);
+      if (result.ok) {
+        claimedPromos.add(promoId);
+        renderQuests();
+        const msg = result.alreadyClaimed
+          ? 'You already claimed this offer.'
+          : 'Offer claimed! Show this screen to the vendor to redeem.';
+        alert(msg);
+      } else {
+        e.target.disabled = false;
+        e.target.textContent = 'Claim Offer';
+        alert('Could not claim. Try again.');
+      }
     });
   });
 }
 
 map.on('load', async () => {
-  console.log('Delta City OS — Session 7: Promo Quests live');
+  console.log('Delta City OS — Promo claims wired to Supabase');
+  console.log('Supabase configured:', isSupabaseConfigured);
+
+  // Load claims (Supabase + local merge)
+  claimedPromos = await loadClaimedPromoIds();
 
   // Markets
   const markets = await fetch('/src/data/warri-markets.geojson').then(r => r.json());
@@ -163,7 +165,7 @@ map.on('load', async () => {
     paint: { 'line-color': '#f97316', 'line-width': 6, 'line-opacity': 0.75 }
   });
 
-  // Promo markers (gold)
+  // Promo markers
   const activePromos = getActivePromos();
   const promoGeo = {
     type: 'FeatureCollection',
@@ -176,27 +178,18 @@ map.on('load', async () => {
   map.addSource('promos', { type: 'geojson', data: promoGeo });
   map.addLayer({
     id: 'promos-circle', type: 'circle', source: 'promos',
-    paint: {
-      'circle-radius': 10,
-      'circle-color': '#eab308',
-      'circle-stroke-width': 2,
-      'circle-stroke-color': '#fff'
-    }
+    paint: { 'circle-radius': 10, 'circle-color': '#eab308', 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' }
   });
 
   map.on('click', 'promos-circle', (e) => {
     const p = e.features[0].properties;
     new maplibregl.Popup()
       .setLngLat(e.lngLat)
-      .setHTML(`
-        <strong>${p.title}</strong><br/>
-        <small>${p.merchant}</small><br/>
-        <span style="color:#eab308;font-weight:600">${p.discount}</span>
-      `)
+      .setHTML(`<strong>${p.title}</strong><br/><small>${p.merchant}</small><br/><span style="color:#eab308;font-weight:600">${p.discount}</span>`)
       .addTo(map);
   });
 
-  // Live markers
+  // Live
   map.addSource('live-positions', { type: 'geojson', data: createLiveGeoJSON([]) });
   map.addLayer({
     id: 'live-street-keepers', type: 'circle', source: 'live-positions',
