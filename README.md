@@ -5,33 +5,35 @@
 ## Session Log
 - 0–6: Map, markets, corridor, live markers, fixed quests
 - 7: Promo Quest layer (offers + claim UI)
-- **7b: Promo claims wired to Supabase** (with local fallback)
+- 7b: Promo claims wired to Supabase
+- **Seed script for sample promos**
 
-## Promo Claims
+## Supabase Setup (one-time)
 
-Claims are stored in:
-1. **Supabase** `promo_claims` table (when keys are configured)
-2. **localStorage** as cache + offline fallback
-
-Anonymous users get a stable `device_key` so claims persist before login.
-
-### One-time Supabase setup
-1. Create project at supabase.com
-2. SQL Editor → paste full `src/lib/schema.sql` → Run
-3. Copy URL + anon key into `.env`:
+1. Create a free project at [supabase.com](https://supabase.com)
+2. **SQL Editor** → run `src/lib/schema.sql` (full schema)
+3. **SQL Editor** → run `src/lib/seed-promos.sql` (sample Warri promos)
+4. Copy Project URL + anon key into `.env`:
    ```
-   VITE_SUPABASE_URL=...
-   VITE_SUPABASE_ANON_KEY=...
+   VITE_SUPABASE_URL=https://xxxx.supabase.co
+   VITE_SUPABASE_ANON_KEY=eyJ...
    ```
-4. Restart `npm run dev`
+5. `npm install && npm run dev`
 
-Optional: seed the sample promos into the `promos` table so they exist server-side too.
+### What the seed adds
+| ID | Merchant | Offer |
+|----|----------|-------|
+| promo-igbudu-fabrics | Igbudu Fabric Hub | 10% OFF fabrics |
+| promo-main-market-food | Main Market Fresh | ₦500 OFF foodstuff |
+| promo-okere-daily | Okere Daily Needs | BUY 2 GET 1 |
 
-## Quick Start
+Safe to re-run (upserts on conflict).
+
+## Quick Start (no Supabase yet)
 ```bash
 npm install
-cp .env.example .env   # add keys when ready
 npm run dev
 ```
+Map and claims still work with local fallback.
 
 Built by Village Boy / Teddy Otega.
