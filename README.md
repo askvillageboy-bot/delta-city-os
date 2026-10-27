@@ -2,18 +2,21 @@
 
 Phone map for Warri: market offers, street teams, clean-city actions.
 
-## How to demo (30 seconds)
-1. Open the app
-2. Tap **Find me** (or **I'm not in Warri — demo**)
-3. Tap the big button to **claim an offer** or **report a dumpster**
-4. Show the person: “This is what you get / how you help”
+## Public demo link
 
-## Sessions
-- 0–9: Map, markets, promos, civic, claims
-- 10: Near you + location
-- **11: Start-here path** (locate → act → done)
+See **[DEPLOY.md](./DEPLOY.md)** — import the repo on Vercel once, then share the `.vercel.app` URL on WhatsApp.
 
-## Run locally
+(Automated Vercel create from this account is blocked by permissions; manual import works.)
+
+## How to show someone (30 seconds)
+1. Open the link
+2. Tap **Find me** or **I'm not in Warri — demo**
+3. Claim an offer or complete a clean action
+4. Say: “Deals near you. Or help keep the street clean.”
+
+## Sessions 0–12
+Map → markets → promos → civic → near you → do-now path → deploy guide
+
 ```bash
 npm install
 npm run dev
