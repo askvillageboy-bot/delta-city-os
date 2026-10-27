@@ -28,6 +28,41 @@
         font-size: 0.65rem; padding: 2px 8px; border-radius: 999px; margin-bottom: 10px;
       }
 
+      /* Session 11 — do-now strip */
+      .do-now {
+        background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(34,197,94,0.12));
+        border: 1px solid rgba(14, 165, 233, 0.4);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      .do-now-label {
+        font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em;
+        color: #38bdf8; font-weight: 700; margin-bottom: 6px;
+      }
+      .do-now-title {
+        font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; line-height: 1.25;
+      }
+      .do-now-sub {
+        font-size: 0.75rem; color: #94a3b8; margin-bottom: 10px; line-height: 1.35;
+      }
+      .do-now-btn {
+        width: 100%; border: none; border-radius: 8px; padding: 10px;
+        background: #0ea5e9; color: white; font-size: 0.85rem; font-weight: 700;
+        cursor: pointer;
+      }
+      .do-now-btn:active { transform: scale(0.98); }
+      .do-now-btn.secondary { background: rgba(148,163,184,0.25); color: #e2e8f0; }
+      .do-now-steps {
+        display: flex; gap: 6px; margin-top: 10px;
+      }
+      .do-now-step {
+        flex: 1; text-align: center; font-size: 0.62rem; color: #64748b;
+        padding: 4px 2px; border-radius: 6px; background: rgba(15,23,42,0.4);
+      }
+      .do-now-step.on { color: #38bdf8; background: rgba(14,165,233,0.15); font-weight: 600; }
+      .do-now-step.done { color: #22c55e; }
+
       .find-row { display: flex; gap: 8px; margin-bottom: 10px; }
       .find-row button {
         flex: 1; border: none; border-radius: 8px; padding: 8px 10px;
@@ -115,7 +150,11 @@
     <div class="overlay">
       <h1>Delta City OS</h1>
       <p class="tagline">Warri · deals, clean streets, your map</p>
-      <span class="badge">Session 10 · Near you</span>
+      <span class="badge">Session 11</span>
+
+      <div class="do-now" id="do-now">
+        <!-- filled by JS -->
+      </div>
 
       <div class="find-row">
         <button type="button" id="btn-find-me">Find me</button>

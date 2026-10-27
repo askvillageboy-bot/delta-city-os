@@ -1,21 +1,23 @@
 # Delta City OS — Warri Pilot
 
-Phone map for Warri: market offers, street teams, and clean-city actions.
+Phone map for Warri: market offers, street teams, clean-city actions.
 
-## Session 10
-- **Find me** — uses your phone location
-- **Near you** panel — closest market, offers and full dumpsters within 400m
-- **Demo in Warri** — simulate standing in central Warri (for demos outside the city)
-- Offers show distance / “Near you”
+## How to demo (30 seconds)
+1. Open the app
+2. Tap **Find me** (or **I'm not in Warri — demo**)
+3. Tap the big button to **claim an offer** or **report a dumpster**
+4. Show the person: “This is what you get / how you help”
 
-## Quick start
+## Sessions
+- 0–9: Map, markets, promos, civic, claims
+- 10: Near you + location
+- **11: Start-here path** (locate → act → done)
+
+## Run locally
 ```bash
 npm install
 npm run dev
 ```
-
-On phone: allow location, tap **Find me**.  
-For a pitch outside Warri: tap **Demo in Warri**.
 
 Repo: https://github.com/askvillageboy-bot/delta-city-os
 
